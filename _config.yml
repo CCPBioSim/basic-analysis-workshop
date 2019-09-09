@@ -1,0 +1,3 @@
+theme: jekyll-theme-slate
+title: [An Introduction to Basic Interactive Analysis of MD Data]
+description: [This workshop shows how Jupyter notebooks and the Python package MDTraj can be used for the interactive analysis of MD trajectory data.]
