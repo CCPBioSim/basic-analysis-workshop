@@ -1,11 +1,20 @@
-# CCP-BioSim Training Course: Basic MD data analysis with MDTraj
-IPython (Jupyter) notebooks are a great environment in which to do exploratory analysis of MD data. This workshop illustrates how two key Python packages - *numpy* and *matplotlib* - can be used with the MD analysis package [mdtraj](http://mdtraj.org/1.9.3/) for some simple standard analysis tasks.
+# CCPBioSim Basic Analysis Workshop
 
-## Requirements
-A basic knowledge of Python and MD simulation methods.
+[![build](https://github.com/ccpbiosim/basic-analysis-workshop/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/ccpbiosim/basic-analysis-workshop/actions/workflows/build.yaml)
 
-## Training material
-A Jupyter notebook and example data files.
+## Docker 
+
+This container is derived from the CCPBioSim JupyterHub image. This container
+adds the necessary software packages and notebook content to form a deployable
+course container. The source content for this course can be found at
+https://github.com/CCPBioSim/basic-analysis-workshop
+
+## How to Use
+
+In our containers we are using the JupyterHub default port 8888, so you should
+forward this port when deploying locally::
+
+    docker run -p 8888:8888 ghcr.io/jimboid/biosim-basic-analysis-workshop:latest
 
 ## Contact
 Please direct all questions and feedback to [Charlie Laughton](mailto:charles.laughton@nottingham.ac.uk)
