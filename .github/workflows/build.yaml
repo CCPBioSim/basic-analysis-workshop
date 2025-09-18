@@ -36,7 +36,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5.8.0
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}
 
       - name: Authenticate with GHCR
         id: auth
@@ -54,9 +54,10 @@ jobs:
         id: build
         uses: docker/build-push-action@v6.18.0
         with:
+          file: ./docker/Dockerfile
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
-          tags: ghcr.io/${{ github.repository }}
+          tags: ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
       - name: Export digest
@@ -102,7 +103,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5.8.0
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}
           tags: dev
 
       - name: Create manifest list and push
@@ -116,18 +117,18 @@ jobs:
             --annotation='index:org.opencontainers.image.created=${{ steps.timestamp.outputs.timestamp }}' \
             --annotation='index:org.opencontainers.image.url=${{ github.event.repository.url }}' \
             --annotation='index:org.opencontainers.image.source=${{ github.event.repository.url }}' \
-            $(printf 'ghcr.io/${{ github.repository }}@sha256:%s ' *)
+            $(printf 'ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}@sha256:%s ' *)
 
       - name: Create manifest list and push without annotations
         if: steps.annotate.outcome == 'failure'
         working-directory: ${{ runner.temp }}/digests
         run: |
           docker buildx imagetools create  $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'ghcr.io/${{ github.repository }}@sha256:%s ' *)
+            $(printf 'ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}@sha256:%s ' *)
 
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ghcr.io/${{ github.repository }}:dev
+          docker buildx imagetools inspect ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}:dev
 
   tests:
     strategy:
@@ -147,9 +148,9 @@ jobs:
       - name: Test notebooks
         shell: bash
         run: |
-          docker run -t ghcr.io/${{ github.repository }}:dev bash -c " \
+          docker run -t ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}:dev bash -c " \
             pip install pytest nbmake; \
-            find . -name '*.ipynb' | pytest --nbmake --nbmake-timeout=3600; "
+            find . -name '*.ipynb' | pytest --nbmake --nbmake-timeout=3600;"
 
   tags:
     runs-on: ubuntu-24.04
@@ -171,9 +172,9 @@ jobs:
         shell: bash
         run: |
           docker buildx imagetools create \
-            --tag ghcr.io/${{ github.repository }}:latest \
-            --tag ghcr.io/${{ github.repository }}:${{ needs.build.outputs.tag }} \
-            ghcr.io/${{ github.repository }}:dev
+            --tag ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}:latest \
+            --tag ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}:${{ needs.build.outputs.tag }} \
+            ghcr.io/${{ vars.ORG_REPO }}/${{ github.event.repository.name }}:dev
 
       - name: Post version update to dash
         uses: peter-evans/repository-dispatch@v3.0.0
