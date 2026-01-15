@@ -1,6 +1,5 @@
 # CCPBioSim Basic Analysis Workshop
 
-[basic-analysis](https://github.com/ccpbiosim/basic-analysis-workshop)
 [![ci](https://github.com/ccpbiosim/basic-analysis-workshop/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/ccpbiosim/basic-analysis-workshop/actions/workflows/build.yaml)
 [![latest](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fccpbiosim.github.io%2Fworkshop.json&query=%24.containers.basic-analysis-workshop.latest&labelColor=grey&logo=github&logoColor=white&label=latest&color=purple)](https://github.com/ccpbiosim/basic-analysis-workshop/pkgs/container/basic-analysis-workshop)
 [![issues](https://img.shields.io/github/issues/ccpbiosim/basic-analysis-workshop?logo=github&labelColor=grey)](https://github.com/CCPBioSim/basic-analysis-workshop/issues)
